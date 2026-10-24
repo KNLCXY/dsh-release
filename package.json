@@ -1,6 +1,6 @@
 {
   "name": "dsh-release",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "One-call release pipeline for DeepSeek Harness plugin repos: bump versions everywhere, run tests, pack and hash, commit and tag, open the GitHub release, publish to npm (token / staged / OIDC trusted publishing) and verify that all three copies are byte-identical.",
   "type": "module",
   "main": "lib/index.js",
@@ -64,11 +64,12 @@
     }
   },
   "scripts": {
-    "test": "node test/test-semver.mjs && node test/test-policy.mjs && node test/test-pack.mjs && node test/test-plan.mjs && node test/test-fixture.mjs",
+    "test": "node test/test-semver.mjs && node test/test-policy.mjs && node test/test-pack.mjs && node test/test-plan.mjs && node test/test-optional-service.mjs && node test/test-fixture.mjs",
     "test:semver": "node test/test-semver.mjs",
     "test:policy": "node test/test-policy.mjs",
     "test:pack": "node test/test-pack.mjs",
     "test:plan": "node test/test-plan.mjs",
+    "test:optional": "node test/test-optional-service.mjs",
     "test:fixture": "node test/test-fixture.mjs",
     "diag:env": "node test/diag-env.mjs",
     "diag:pack": "node test/diag-pack.mjs",

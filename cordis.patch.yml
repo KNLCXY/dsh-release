@@ -1,0 +1,22 @@
+# dsh-release bundle patch — 把本插件插进 profile 的组合里。
+#
+# 这里的 config 是「出厂默认」；运行时改动写进
+# ~/.dsh/storages/release/settings.json（优先级更高）。
+- insert:
+    - id: dsh-release
+      name: dsh-release
+      config:
+        # 工具链位置，留空 = 自动探测（PATH → dsh-ops 自带 git → 常见安装路径）
+        gitPath: ''
+        # npm CLI，留空 = 优先本机 npm，否则从 registry 下一份缓存在本地
+        npmCli: ''
+        # 钉住要缓存的 npm 版本；留空 = 用 registry 上的 latest
+        npmVersion: ''
+        # GitHub API 凭证；留空 = 环境变量 → dsh-github 存储 → git credential
+        githubToken: ''
+        # 发布成功后装进哪个 DSH profile；留空 = 不装
+        profile: ''
+        # npm publish --access
+        access: public
+        # npm 发布是异步的（202 Accepted），最多等多久确认上线
+        verifyTimeoutMs: 240000

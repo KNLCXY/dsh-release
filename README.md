@@ -2,6 +2,8 @@
 
 给 DeepSeek Harness 一个 `release` 工具：**一次调用把发布走完，并用 sha256 证明三处一致。**
 
+仓库：<https://github.com/KNLCXY/dsh-release> · 尚未发布到 npm（见下面「安装」）
+
 ```text
 release({ action: "prepare", repo: "…/repo/dsh-websift" })     ← 先看计划，什么都不改
 release({ action: "apply",   repo: "…/repo/dsh-websift", bump: "patch" })
@@ -41,10 +43,16 @@ release({ action: "apply",   repo: "…/repo/dsh-websift", bump: "patch" })
 ## 安装
 
 ```bash
-dsh plugin --profile desktop add dsh-release
-# 或者从源码：
+# 从 GitHub（当前唯一的发布渠道）
+dsh plugin --profile desktop add github:KNLCXY/dsh-release
+
+# 或者本机源码目录
 dsh plugin --profile desktop add file:/path/to/dsh-release
 ```
+
+> **尚未发布到 npm。** 这个生态里已经有 `dsh-release-*` 一大堆同类工具（发布自检、证据、门禁……），
+> 其中一个仓库名和功能描述都和这里高度重合。所以先只留 GitHub —— 名字留着，不急着往拥挤的
+> npm 命名空间里再塞一个。真要 `npm i` 的时候，`release({action:"apply"})` 一条命令就能发。
 
 改完源码要 bump `package.json` 的 version 再重新 `add`（pnpm 是按版本号判断是否复制的），
 并且**重启 DSH** 才会加载宿主半。
@@ -145,6 +153,28 @@ EXE="C:/Users/Administrator/Desktop/DeepSeek Harness/DeepSeek Harness.exe"
 ```
 
 `test-fixture.mjs` 用 `test/stub-npm-cli.js` 顶替 npm，所以除了一次只读的 registry 查询之外全程离线。
+
+## 和同类工具的关系
+
+DSH 生态里「发布工具」不算少。2026-10-24 查过一圈，比较接近的有：
+
+| 项目 | 它做什么 | 和这里的区别 |
+|---|---|---|
+| `JOJO-Adam/dsh-release` | 描述同样是「一条命令走完 check/bump/test/push/publish/verify/install」 | 名字和定位高度重合，各写各的 |
+| `dsh-publish-plugin`（npm） | 一键发到 npm + GitHub，fail-closed | 同样默认不执行；发布流程重叠 |
+| `dsh-testkit`（npm） | **真宿主**发布门禁：装进真 DSH 跑生命周期 | 它验运行时行为，这里比字节 |
+| `dsh-release-proof` | 「多源可复现发布证据」 | 最接近这里的哈希核验那块 |
+| `dsh-release-guardian` / `-guard` / `-sentinel` / `-selfcheck` / `-evidence` / `-infringement-audit` | 各类发布风险检查、合规审计 | 覆盖 `prepare` 的一部分 |
+
+这里的两条差异（**没有**逐行读过别人的源码，所以只敢说是「没看到」而不是「没有」）：
+
+1. **三处字节一致**：npm tarball 的 sha256、GitHub Release 附件的 `digest`、本地 `npm pack` 的产物，
+   两两相等才算成功。任一不一致就报失败并写出两个哈希。
+2. **令牌迁移**：token / staged / OIDC 三通道按仓库现状自动选，`setup-ci` 直接生成
+   `id-token: write` 的 workflow —— 应对 npm 2027-01 起停掉 bypass-2FA 令牌直接发布。
+
+另外它是在一台**没有 node、没有 npm、git 在插件包里**的机器上长出来的，
+所以 `lib/proc.js` 里那套工具链自举（找 git、下 npm、造 node 垫片）对同类环境可能也有用。
 
 ## 已知限制
 

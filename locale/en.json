@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Release pipeline · hash-verified",
+    "description": "One call runs the whole release: sync versions, run tests, pack, commit and tag, open the GitHub release, publish to npm, then prove with sha256 that the GitHub asset, the npm tarball and the local artifact are byte-identical. Plan-only by default; ships with OIDC trusted publishing (tag it and let CI publish, no token in the repo) and staged publishing as fallbacks."
+  }
+}

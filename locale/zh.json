@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "发布流水线 · 三处哈希核验",
+    "description": "一次调用把发布走完：版本同步 → 测试 → 打包 → 提交打 tag → GitHub Release → npm 发布 → 用 sha256 证明 GitHub / npm / 本地三处字节一致。默认只出计划不动手；内置 OIDC trusted publishing（打 tag 交给 CI，仓库不存令牌）与 staged publishing 两条替代通道。"
+  }
+}

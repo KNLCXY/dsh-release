@@ -1,0 +1,78 @@
+{
+  "name": "dsh-release",
+  "version": "0.1.0",
+  "description": "One-call release pipeline for DeepSeek Harness plugin repos: bump versions everywhere, run tests, pack and hash, commit and tag, open the GitHub release, publish to npm (token / staged / OIDC trusted publishing) and verify that all three copies are byte-identical.",
+  "type": "module",
+  "main": "lib/index.js",
+  "icon": "./docs/icon.png",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "dsh-plugin.json",
+    "locale",
+    "docs",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "author": "KNLCXY",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KNLCXY/dsh-release.git"
+  },
+  "homepage": "https://github.com/KNLCXY/dsh-release#readme",
+  "bugs": {
+    "url": "https://github.com/KNLCXY/dsh-release/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek",
+    "deepseek-harness",
+    "release",
+    "publish",
+    "npm",
+    "trusted-publishing",
+    "oidc",
+    "semver",
+    "changelog",
+    "agent-tools"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.2",
+    "@deepseek-ai/dsh-tools": "^0.1.5-rc.2 || ^0.2.0-rc.1"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-tools": {
+      "optional": true
+    }
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node test/test-semver.mjs && node test/test-policy.mjs && node test/test-pack.mjs && node test/test-plan.mjs && node test/test-fixture.mjs",
+    "test:semver": "node test/test-semver.mjs",
+    "test:policy": "node test/test-policy.mjs",
+    "test:pack": "node test/test-pack.mjs",
+    "test:plan": "node test/test-plan.mjs",
+    "test:fixture": "node test/test-fixture.mjs",
+    "diag:env": "node test/diag-env.mjs",
+    "diag:pack": "node test/diag-pack.mjs",
+    "diag:path": "node test/diag-path.mjs",
+    "diag:prepare": "node test/diag-prepare.mjs"
+  }
+}

@@ -1,5 +1,24 @@
 # 变更记录
 
+## 0.1.2 — 2026-11-08
+
+修「找不到 git」：`findGit()` 现在会**扫描 dsh-ops 的临时目录**。
+
+- **根因**（`dsh-ops` 0.5.0 改了布局，不是框架问题）：它自带的 git 从固定的
+  `node_modules/@dsh-ops/bash-win32-x64/ucrt64/bin/git.exe` 挪到了
+  `%TEMP%\dsh-ops-niu-exec-<随机>\winuxcmd\usr\bin\git.exe`，而且**每次启动新建一个**；
+  那个固定目录现在是空的。
+  bash 会话能用（dsh-ops 往 PATH 注入了临时目录），但**桌面启动的宿主进程拿不到** ——
+  于是 `release` 工具在 desktop 上直接报「找不到 git」，`prepare` / `apply` 全废。
+- **修法**：新增 `dshOpsTempGitCandidates()`，扫 `%TEMP%/dsh-ops-*/` 下两种布局
+  （0.5.x 的 `winuxcmd/usr/bin`、0.4.x 的 `ucrt64/bin`），**按 mtime 倒序**（最新的最可能是
+  当前这次启动的），逐个实测 `--version` 跑通才算。路径来自扫描时 `how` 标为
+  「dsh-ops 临时目录（扫描发现）」，便于排错时一眼看出走的是哪个分支。
+- 新增回归测试 `test/test-git-discovery.mjs`（9 条断言）：验证新旧两种布局都能发现、
+  mtime 排序、不相关目录（`npm-cache`、`dshx-*` 等）绝不进候选、空路径不抛错。
+- 新增诊断 `test/diag-host-git.mjs`：剔除 PATH 里的 dsh-ops 目录来**模拟宿主视角**，
+  确认裸 `git` 不可用的情况下 `findGit` 仍能从临时目录兜住。实测通过。
+
 ## 0.1.1 — 2026-10-25
 
 修一个**静默失效**的 bug：`/_release/settings` 路由**有时根本不注册**（竞态）。

@@ -1,5 +1,22 @@
 # 变更记录
 
+## 0.1.3 — 2026-11-09
+
+把 `gitIdentity()` 的「config 优先」用测试锁死，并补两处健壮性。
+
+- **回归测试 `test/test-git-identity.mjs`（16 条断言）**。核心是第 ① 组：造一个
+  **历史提交带错邮箱、config 带正确邮箱**的仓库，断言 `gitIdentity()` 必须用 config 那个、
+  **flags 里绝不能出现历史里的错邮箱**。谁把优先级改回去，这条立刻红。
+  另外覆盖：全局配置生效、完全无配置时退到历史、只有 email 没有 name 时不凭空造 name、
+  空仓库走兜底且兜底身份**真能提交成功**。
+- **测试注意**：`git config --get` 在没有该配置时退出码是 1（正常结果），断言里要容错读；
+  要测「历史兜底」和「兜底身份」必须先隔离全局 gitconfig（`GIT_CONFIG_GLOBAL` 指空文件），
+  否则本机设的全局 noreply 会一直命中 config 分支，那两条分支根本测不到。
+- **`gitRun()` 容错**：现在同时接受 `{ path }` 对象和路径字符串。写测试时就踩过 ——
+  传字符串会让 `git.path` 变 `undefined`，在 `spawn` 里报一个 `ERR_INVALID_ARG_TYPE`，
+  和「找不到 git」一点关系都没有，排查成本高。
+- `gitIdentity` 挂到 `__test` 导出，便于单独测。
+
 ## 0.1.2 — 2026-11-08
 
 修「找不到 git」：`findGit()` 现在会**扫描 dsh-ops 的临时目录**。

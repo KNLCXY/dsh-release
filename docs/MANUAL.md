@@ -260,7 +260,7 @@ git push origin <tag>       # 失败时再试一次 --force（重发同一版本
 
 ```bash
 export ELECTRON_RUN_AS_NODE=1
-"C:/Users/Administrator/Desktop/DeepSeek Harness/DeepSeek Harness.exe" test/test-fixture.mjs
+"C:/Users/<you>/Desktop/DeepSeek Harness/DeepSeek Harness.exe" test/test-fixture.mjs
 ```
 
 ---

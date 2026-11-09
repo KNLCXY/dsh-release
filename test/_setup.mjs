@@ -1,7 +1,7 @@
 // 测试共用：把插件源码里的 '@deepseek-ai/dsh-tools' 指到 DSH 里的真实实现，
 // 找不到就退化成桩（纯逻辑测试仍能跑）。测试不依赖任何硬编码绝对路径。
 import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { homedir, tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -17,7 +17,7 @@ export function resolveTools() {
   if (env && existsSync(env)) return env
   const guesses = [
     join(process.env.LOCALAPPDATA || '', 'Programs', 'DeepSeek Harness', 'resources', 'app.asar', 'dsh', 'node_modules', '@deepseek-ai', 'dsh-tools', 'lib', 'index.js'),
-    'C:/Users/Administrator/Desktop/DeepSeek Harness/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh-tools/lib/index.js',
+    join(homedir(), 'Desktop', 'DeepSeek Harness', 'resources', 'app.asar', 'dsh', 'node_modules', '@deepseek-ai', 'dsh-tools', 'lib', 'index.js'),
     '/Applications/DeepSeek Harness.app/Contents/Resources/app.asar/dsh/node_modules/@deepseek-ai/dsh-tools/lib/index.js',
     '/usr/lib/node_modules/@deepseek-ai/dsh-tools/lib/index.js',
     join(ROOT, 'node_modules', '@deepseek-ai', 'dsh-tools', 'lib', 'index.js'),

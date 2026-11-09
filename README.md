@@ -142,7 +142,7 @@ workflow 文件名必须**一字不差**（含 `release.yml` 这个扩展名）�
 
 ```bash
 export ELECTRON_RUN_AS_NODE=1
-EXE="C:/Users/Administrator/Desktop/DeepSeek Harness/DeepSeek Harness.exe"
+EXE="C:/Users/<you>/Desktop/DeepSeek Harness/DeepSeek Harness.exe"
 
 "$EXE" test/test-semver.mjs   # 版本号
 "$EXE" test/test-policy.mjs   # 口径 / tag / 通道选择

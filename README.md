@@ -1,5 +1,27 @@
 # dsh-release
 
+> ## ⚠️ 已合并进 [dsh-github](https://github.com/KNLCXY/dsh-github)，本仓库不再更新
+>
+> 从 **dsh-github 1.0.0** 起，`release` 工具和它的全部逻辑（prepare / apply / setup-ci / verify）
+> 已并入 dsh-github，与 GitHub API 工具共用同一份设置和 token。
+>
+> **新装请去：** <https://github.com/KNLCXY/dsh-github>
+>
+> 迁移（不用手动搬设置）：
+>
+> ```bash
+> dsh plugin --profile <profile> add "file:<路径>/dsh-github"
+> dsh plugin --profile <profile> remove dsh-release
+> # 重启 DSH
+> ```
+>
+> 首次启动会把 `~/.dsh/storages/release/settings.json` 里缺的字段补进
+> `~/.dsh/storages/dsh-github/settings.json`（不覆盖已有值）；
+> npm CLI 缓存也沿用原来的位置，不会重新下载。
+> 旧路由 `/_release/settings` 仍然可用（指向新实现）。
+>
+> 本仓库保留是为了**历史与 issue 可追溯**，代码停留在 0.1.3。
+
 给 DeepSeek Harness 一个 `release` 工具：**一次调用把发布走完，并用 sha256 证明三处一致。**
 
 仓库：<https://github.com/KNLCXY/dsh-release> · 尚未发布到 npm（见下面「安装」）
